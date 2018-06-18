@@ -1,0 +1,76 @@
+package signIn.cn.yubajin.handler;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.jsoup.Connection.Response;
+
+import signIn.cn.yubajin.utils.NetUtils;
+
+@WebServlet("/QueryCourse")
+public class QueryCourse extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private static String baseUrl = "https://sign.jxufe.cn/course_consumer//jxcjdx//sign/currentAndDayCourses?colleageId=1&username=";
+    
+    public QueryCourse() {
+        super();
+    }
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("application/json; charset=utf-8");
+		NetUtils utils = new NetUtils();
+		String studentNo = request.getParameter("stuNo");
+		
+//		String studentNo = "2201304686";
+//		String studentNo = "2201403938";
+//		String studentNo = "2201503984";
+//		String studentNo = "2201504026";
+		
+		ServletContext servletContext = request.getServletContext();
+
+		String url = baseUrl + studentNo;
+		Map<String, String> cookie = utils.getCookie(url);
+		Response resp = getGetResponse(utils, url);
+		System.out.println("cookie:" + cookie);
+		servletContext.setAttribute("cookie", cookie);
+		servletContext.setAttribute("stuNo", studentNo);
+		
+		String queryCourse = resp.body();
+		System.out.println("queryCourse:" + queryCourse);
+		
+		servletContext.setAttribute("queryCourse", queryCourse);
+//		queryCourse = "[{\"id\":26238,\"scheduleId\":19220,\"courseName\":\"西方艺术史\",\"courseStartTime\":\"14:00\",\"courseEndTime\":\"15:40\",\"weeks\":65535,\"day\":5,\"times\":48,\"teacher\":\"刘涵\",\"classroomId\":3724,\"makeUpStatus\":0,\"week\":512,\"signStartTime\":\"13:40\",\"signEndTime\":\"14:20\",\"signOutStartTime\":\"15:20\",\"signOutEndTime\":\"16:00\",\"reSignStartTime\":\"14:30\",\"reSignEndTime\":\"15:10\",\"signProxyUser\":\"张雨晴,杨宁,钟华杰,张雨晴,管潇然,温嘉豪\",\"signStatusAndSignDate\":{\"1\":1526019369000},\"scheduleArrangeParam\":[{\"id\":326,\"scheduleArrangeId\":26238,\"stateId\":7,\"colleageId\":1,\"state\":1,\"name\":\"签到\"},{\"id\":327,\"scheduleArrangeId\":26238,\"stateId\":8,\"colleageId\":1,\"state\":1,\"name\":\"签退\"},{\"id\":328,\"scheduleArrangeId\":26238,\"stateId\":6,\"colleageId\":1,\"state\":1,\"name\":\"续签\"},{\"id\":329,\"scheduleArrangeId\":26238,\"stateId\":9,\"colleageId\":1,\"state\":1,\"name\":\"助签\"}],\"currentDate\":\"2018-05-11\",\"caption\":\"多媒体2301\",\"isProxy\":\"0\",\"countSignIn\":1,\"classStatus\":[0,0,0]}]";
+		PrintWriter writer = response.getWriter();
+		writer.write(queryCourse);
+		
+//		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/signPage.jsp");
+//		rd.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+	
+	private static Response getGetResponse(NetUtils utils, String url) {
+//		String studentNo = "2201504021";
+//		String studentNo = "2201304686";
+//		String studentNo = "2201403938";
+//		String studentNo = "2201503984";
+		
+		Response response = utils.doMyGetRequest(url);
+
+		return response;
+	}
+	
+}

@@ -1,0 +1,19 @@
+https://sign.jxufe.cn
+
+
+{
+	"about_us":{ "copyright": "Copyright  2015 - 2020", "softVersion": "V0.0.4", "companyAddress": "www.bnwisdom.com","company":"江西智慧百年科技有限公司"},
+	"desc": "学校参数",
+	"url": "https://sign.jxufe.cn/course_consumer/",
+	"static_url":"https://sign.jxufe.cn/course_consumer/imageFile/",
+	"landing_page":{"url":"https://wxcourse.jxufe.cn/course_consumer/imageFile/landingPage.html","open":true},
+	"welcome_page":{"url":"https://wxcourse.jxufe.cn/course_consumer/imageFile/welcome.html","open":false},
+	"sign_common_problem_page":{"url":"https://wxcourse.jxufe.cn/course_consumer/imageFile/sign_common_problem.html"},
+	"colleages": [
+	{
+		"id": 1,
+		"code": "jxcjdx",
+		"logo": "1513908945854.jpg",
+		"name": "江西财经大学"
+	}]
+}
